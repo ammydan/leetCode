@@ -127,14 +127,115 @@ public class Sort {
     }
     /**
      * Sort5:mergeSort
+     * Runtime Complexity:O(nlogn)
+     * Space Complexity: O(n)
+     * 排序方式：outplace
+     * 稳定性：稳定stable
+     * merge部分：
+     * 1、创建一个新的数组，数组长度是两个小的数组的和
+     * 2、创建三个指针，其中两个a,b指向两个较小的数组的第一个元素，最后一个指针c指向新创建的数组
+     * 3、比较两个指针所指的两个元素，较小的放入c所指的位置的数组中，并且该指针和c一起增大一个。
+     * 4、重复3步骤，直到a,b中任意一个到达了数组末尾。
+     * 5、将还有剩余元素的数组的剩余部分放在新建数组后面
+     * 递归部分：
+     * 1、比较首尾大小，如果元素小于2个则无需处理
+     * 2、将原有的数组分成两个部分继续mergesort
+     * 3、使用merge合并这两个部分
      * **/
+    private void merge(Comparable[] list,int l1, int r1,int l2, int r2){
+        //这里仍然保持和原数组一致是方便接下来的算法操作。
+        int len = list.length;
+        Comparable[] templist = new Comparable[len];
+        for(int i=0;i<len;i++){
+            //这里我们无法，也无需对数组指向的对象进行深度拷贝，因为我们排序过程中没有对对象进行修改，只是操作了指向对象的引用。
+            templist[i] = list[i];
+        }
+        int a=l1,b=l2,c=l1;
+//        这里将merge步骤中的3,4合并，使得代码更加整洁
+        while(c<r2){
+            if(a>=r1)list[c++] = templist[b++];
+            else if(b>=r2)list[c++] = templist[a++];
+            else if(less(templist[b],templist[a])) list[c++] = templist[b++];
+            else list[c++] = templist[a++];
+        }
+    }
+    public void mergeSort(Comparable[] list,int l, int r){
+        if(r-l>1){
+            int mid = l+ (r-l)/2;
+            mergeSort(list,l,mid);
+            mergeSort(list,mid,r);
+            merge(list,l,mid,mid,r);
+        }
+    }
+//    这里是非递归写法的mergeSort
+    public void mergeSort(Comparable[] list){
+        int len = list.length;
+        for(int i=1;i<len;i*=2){
+            for(int j=0;j<len-i;j =j+i+i){
+                merge(list,j,j+i,j+i,Math.min(j+i+i,len));
+            }
+        }
+
+    }
+
+    /***
+     * Sort6: quickSort
+     * partition部分
+     * 1、从数组中挑选一个基准数p
+     * 2、将比p大的放后面，比p小的或者小的放在前面
+     * 3、返回p的index
+     * 递归部分
+     * 1、先进行partition，获得相应的index。
+     * 2、在进行进一步的quickSort，(0,index),(index,len)
+     * ***/
+    private int partition(Comparable[] list,int l, int r){
+        int index = l;
+        for(int i=l+1;i<r;i++){
+            if(less(list[index],list[i])){
+                
+            }
+        }
+
+    }
+    public void quickSort(Comparable[] list,int l,int r){
+        if(r-l>1){
+            int index = partition(list,l,r);
+            quickSort(list,l,index);
+            quickSort(list,index,r);
+        }
+
+    }
 
     public static void main(String[] args) {
         Sort test = new Sort();
         Integer[] list = {4,3,7,1,33,23};
-        test.shellSort(list);
+//        test.mergeSort(list,0,list.length);
+        test.mergeSort(list);
         for(int i :list){
             System.out.println(i);
         }
+//        Test1[] x = new Test1[5];
+//        Test1 test11 = new Test1(23,3);
+//        Test1 test12 = new Test1(53,3);
+//        Test1 test13 = new Test1(12,3);
+//        Test1 test14 = new Test1(207,3);
+//        Test1 test15 = new Test1(25,3);
+//        x[0] = test11;
+//        x[1] = test12;
+//        x[2] = test13;
+//        x[3] = test14;
+//        x[4] = test15;
+//        Test1[] y = new Test1[x.length];
+//        for(int i= 0;i<x.length;i++){
+//            y[i] = x[i];
+//        }
+//        for(Test1 test: y){
+//            System.out.println(test);
+//        }
+//        System.out.println("============================");
+//        y[2] = x[3];
+//        for(Test1 test:x){
+//            System.out.println(test);
+//        }
     }
 }

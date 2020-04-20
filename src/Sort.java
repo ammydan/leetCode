@@ -1,4 +1,5 @@
-import java.util.LinkedList;
+import dataStructure.MinHeap;
+import middle.MinimumPathSum;
 
 public class Sort {
     private Boolean less(Comparable a, Comparable b){
@@ -16,6 +17,7 @@ public class Sort {
      * Space Complexity:O(1)
      * 排序方式：inplace
      * 稳定性：稳定stable
+     * 算法：
      * 1、从第一个元素开始与临近的后面一个元素做比较（并用一个指针或者索引进行位置确定）：
      *  1)如果大于后面一个元素，则与后面的元素换位置指针+1
      *  2)如果等于直接指针+1
@@ -39,6 +41,7 @@ public class Sort {
      * Space Complexity: O(1)
      * 排序方式：inplace
      * 稳定性：不稳定unstable
+     * 算法：
      * 1、首先选择列表中最小/大的元素（记录这个最大元素的位置，而不是其值），将其与第一个位置元素交换
      * 2、接着在剩下的所有的再重复1的步骤，直到最后一个元素
      * ****/
@@ -61,6 +64,7 @@ public class Sort {
      * Space Complexity: O(1)
      * 排序方式：inplace
      * 稳定性：稳定stable
+     * 算法：
      * 1、将分为两个部分，前面一个部分是已经排好序的，后面是未排序的。
      * 2、选择后面部分的第一个元素，在前面部分找到一个合适的位置然后插入（并入前面的部分）
      * 3、重复1，2步骤直到后面部分没有元素了
@@ -105,6 +109,7 @@ public class Sort {
      * Space Complexity: O(1)
      * 排序方式：inplace
      * 稳定性：不稳定unstable
+     * 算法：
      * 希尔排序其实是在插入排序上的一次升级，我们调节每次间隔大小直到这个间隔变为最小的1
      * 三层循环：
      * 1) 选择间隔
@@ -131,6 +136,7 @@ public class Sort {
      * Space Complexity: O(n)
      * 排序方式：outplace
      * 稳定性：稳定stable
+     * 算法：
      * merge部分：
      * 1、创建一个新的数组，数组长度是两个小的数组的和
      * 2、创建三个指针，其中两个a,b指向两个较小的数组的第一个元素，最后一个指针c指向新创建的数组
@@ -147,7 +153,7 @@ public class Sort {
         int len = list.length;
         Comparable[] templist = new Comparable[len];
         for(int i=0;i<len;i++){
-            //这里我们无法，也无需对数组指向的对象进行深度拷贝，因为我们排序过程中没有对对象进行修改，只是操作了指向对象的引用。
+            //这里我们无法、也无需对数组指向的对象进行深度拷贝，因为我们排序过程中没有对对象进行修改，只是操作了指向对象的引用。
             templist[i] = list[i];
         }
         int a=l1,b=l2,c=l1;
@@ -180,9 +186,17 @@ public class Sort {
 
     /***
      * Sort6: quickSort
+     * Runtime Complexity: O(nlogn)
+     * Space Complexity: O(1)
+     * 排序方式：inplace
+     * 稳定性：不稳定unstable
+     * 算法：
      * partition部分
      * 1、从数组中挑选一个基准数p
      * 2、将比p大的放后面，比p小的或者小的放在前面
+     * ——设置两个指针small,more,其中small表示的是小于或等于index的值，more表示大于或者等于index的值
+     * ——当small在前进遇到比index大时暂停，当more遇到比index小时暂停
+     * ——比较small和more的大小，如果small>=more的时候，跳出循环，然后接着上面的步骤；否则我们交换这两个位置的值
      * 3、返回p的index
      * 递归部分
      * 1、先进行partition，获得相应的index。
@@ -190,27 +204,61 @@ public class Sort {
      * ***/
     private int partition(Comparable[] list,int l, int r){
         int index = l;
-        for(int i=l+1;i<r;i++){
-            if(less(list[index],list[i])){
-                
+        Comparable pivot = list[index];
+        int small=l,more=r;
+        while(true){
+            while(less(list[++small],pivot)){
+                if(small==r-1)break;
             }
+            while(less(pivot,list[--more])){
+                if(more==l)break;
+            }
+            if(small>=more)break;
+            swap(list,small,more);
         }
+        swap(list,index,more);
+        return more;
 
     }
     public void quickSort(Comparable[] list,int l,int r){
         if(r-l>1){
             int index = partition(list,l,r);
             quickSort(list,l,index);
-            quickSort(list,index,r);
+            quickSort(list,index+1,r);
         }
 
     }
+
+    /**
+     * Sort7: heapSort
+     * RunTimeComplexity: O(nlogn)
+     * SpaceComplexity:O(1)（如果你是在实现算法的时候直接实现了类似于堆的功能，否则调用堆结构的话其实需要O(n)）
+     * 排序方式:inplace（如果你是在实现算法的时候直接实现了类似于堆的功能，否则其实需要outplace）
+     * 稳定性：不稳定
+     * 这个算法涉及到了一个特殊的数据结构——堆
+     *算法：
+     * 1、根据给的数组创建堆
+     * 2、一直从堆中取出最小的值，放入新的数组中，直到堆空了。
+     * ***/
+    public void heapSort(Comparable[] list){
+        MinHeap minHeap = new MinHeap(list);
+        int len = list.length;
+        for(int i=0;i<len;i++){
+            list[i] = minHeap.deleteMin();
+        }
+    }
+
+    /***
+     * Sort8: countingSort
+     *
+     * ****/
+
 
     public static void main(String[] args) {
         Sort test = new Sort();
         Integer[] list = {4,3,7,1,33,23};
 //        test.mergeSort(list,0,list.length);
-        test.mergeSort(list);
+        test.heapSort(list);
         for(int i :list){
             System.out.println(i);
         }

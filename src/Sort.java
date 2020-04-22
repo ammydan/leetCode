@@ -249,16 +249,54 @@ public class Sort {
     }
 
     /***
-     * Sort8: countingSort
-     *
+     * Sort8: countingSort/keyIndexSorting
+     * RuntimeComplexity: O(n+k)
+     * SpaceComplexity:O(exponential)
+     * 排序的方式：outplace
+     * 稳定性：不稳定unstable
+     * 算法：
+     * 1.1、如果排序的是一个数组的数的话，我们需要遍历获得最大值和最小值（这个算法无法应用
+     * 到含有浮点型数据；还有如果数组含有非常大的数据，那么我们也最好不要使用该算法）然后创建数组
+     * 1.2、排序的是一组符号型数据。我们需要确定这数组的符号表大小，然后创建数组。
+     * 2、统计对应Index数据的数量
+     * 3、累加前面的index数据的数量
+     * 4、遍历list，对应数据为index，然后根据里面的数量-1排到相应数组的位置，然后数量-1.
      * ****/
+    public void countingSort(int[]list){
+        int len = list.length;
+        int min=Integer.MAX_VALUE,max=Integer.MIN_VALUE,base=0;
+        for(int i=0;i<len;i++){
+            if(list[i]<min) min = list[i];
+            if(list[i]>max) max = list[i];
+        }
+        int[]count = new int[max-min+1];
+        int gap = count.length;
+        for(int i=0;i<len;i++){
+            count[list[i]-min]++;
+        }
+        for(int i=1;i<gap;i++){
+            count[i]+=count[i-1];
+        }
+        int[]temp = list.clone();
+        for(int i=0;i<len;i++){
+            int index = count[temp[i]-min]--;
+            list[index-1] = temp[i];
+        }
+
+    }
+
+    /***
+     * Sort9: bucketSort
+     * 算法
+     * ***/
 
 
     public static void main(String[] args) {
         Sort test = new Sort();
-        Integer[] list = {4,3,7,1,33,23};
+//        Integer[] list = {4,3,7,1,33,23};
+        int[] list = {4,3,7,1,33,23};
 //        test.mergeSort(list,0,list.length);
-        test.heapSort(list);
+        test.countingSort(list);
         for(int i :list){
             System.out.println(i);
         }

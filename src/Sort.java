@@ -1,6 +1,10 @@
 import dataStructure.MinHeap;
 import middle.MinimumPathSum;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+
 public class Sort {
     private Boolean less(Comparable a, Comparable b){
         if(a.compareTo(b)<0) return true;
@@ -11,6 +15,8 @@ public class Sort {
         list[i] = list[j];
         list[j] = temp;
     }
+
+/**********************比较类算法，只需实现了compareTo的方法的类型都可以统一使用这个算法（而且这种方式下，比较类算法不可能突破nlogn)*************************/
     /***
      * Sort1: BubbleSort
      * Runtime Complexity:O(n^2)
@@ -42,7 +48,7 @@ public class Sort {
      * 排序方式：inplace
      * 稳定性：不稳定unstable
      * 算法：
-     * 1、首先选择列表中最小/大的元素（记录这个最大元素的位置，而不是其值），将其与第一个位置元素交换
+     * 1、首先选择列表中最小/大的元素（记录这个最大元素的位置，而不是其值），将其与第一个（前一个循环的末尾）位置元素交换
      * 2、接着在剩下的所有的再重复1的步骤，直到最后一个元素
      * ****/
     public void selectionSort(Comparable[] list){
@@ -248,12 +254,15 @@ public class Sort {
         }
     }
 
+
+/*********************非比较算法（也就是说仅仅实现compareTo是无法满足以下算法的要求，必须是进一步更具体的类型**********************************/
+
     /***
      * Sort8: countingSort/keyIndexSorting
      * RuntimeComplexity: O(n+k)
      * SpaceComplexity:O(exponential)
      * 排序的方式：outplace
-     * 稳定性：不稳定unstable
+     * 稳定性：stable（但是我这个版本是不稳定的，因为是倒着来的）
      * 算法：
      * 1.1、如果排序的是一个数组的数的话，我们需要遍历获得最大值和最小值（这个算法无法应用
      * 到含有浮点型数据；还有如果数组含有非常大的数据，那么我们也最好不要使用该算法）然后创建数组
@@ -287,8 +296,87 @@ public class Sort {
 
     /***
      * Sort9: bucketSort
-     * 算法
+     * RuntimeComplexity:O(n+k*n/klogrange/k)=O(n+nlogn/k)=O(n+nlogn-nlogk)当k接近n时可以看到时间复杂度接近为n
+     * SpaceComplexity:O(n+k)
+     * 排序方式：outplace
+     * 稳定性：稳定stable
+     * 算法:
+     * （桶可以使用链表实现，为了实现一次可以创建多个链表，我们可以创建包含该链表的链表或者数组；该数组中的元素必须是可以进行加减运算，否则这个算法无法算出其中的范围）
+     * 1、然找出数组中最大的和最小的值然后算出范围,根据想要的桶的数量k计算每个桶的范围：range = (max-min+1)
+     * vol = range/k;
+     * 2、遍历数组，将对应范围的数放入相应的桶中：
+     *  ——桶内需要按顺序排列
+     * 3、把桶按顺序连接起来就可以得到有序数组。
      * ***/
+    public void bucketSort(int[] list) {
+        int len = list.length;
+        int n = 3;
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        for (int i = 0; i < len; i++) {
+            if (list[i] > max) max = list[i];
+            if (list[i] < min) min = list[i];
+        }
+        int vol = (int) Math.ceil((max - min + 1) / n);
+        ArrayList<LinkedList<Integer>> buckets = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            buckets.add(new LinkedList<Integer>());
+        }
+        for (int i = 0; i < len; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (list[i] < min + j * vol) {
+                    LinkedList<Integer> temp = buckets.get(j - 1);
+                    temp.add(list[i]);
+                    break;
+                }
+            }
+        }
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            Collections.sort(buckets.get(i));
+            for (Integer x : buckets.get(i)) {
+                list[j++] = x;
+            }
+        }
+    }
+    /******
+     * Sort10:radixSort
+     * (该算法不适用于浮点数类型，这里使用的countingSort不能倒着来）
+     * 算法：
+     * 1、找到最大的数max，需要算出这个数总共有几位。
+     * 2、按照位数最大的数对其他的数进行补位的操作
+     * 3、每一位进行计数排序
+     * ****/
+    public void radixSort(int[] list){
+        int len = list.length;
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<len;i++){
+            if(list[i]>max) max = list[i];
+        }
+        int k=1;
+        int range = 10;
+        while(max/10>0){
+            max/=10;
+            k++;
+        }
+        for(int i=1;i<=k;i++){
+            int[] count = new int[range+1];
+            for(int j=0;j<len;j++){
+                int temp = (int) (list[j]/Math.pow(10,i-1));
+                temp = (int) (temp%Math.pow(10,i));
+                count[temp+1]++;
+            }
+            for(int j=1;j<range;j++){
+                count[j]+=count[j-1];
+            }
+            int[] temp = list.clone();
+            for(int j=0;j<len;j++){
+                int index = (int) (temp[j]/Math.pow(10,i-1));
+                index = (int) (index%Math.pow(10,i));
+                index = count[index]++;
+                list[index] = temp[j];
+            }
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -296,7 +384,7 @@ public class Sort {
 //        Integer[] list = {4,3,7,1,33,23};
         int[] list = {4,3,7,1,33,23};
 //        test.mergeSort(list,0,list.length);
-        test.countingSort(list);
+        test.radixSort(list);
         for(int i :list){
             System.out.println(i);
         }

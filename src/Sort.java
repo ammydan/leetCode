@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/****
+ * Java标准库中也提供了sort的实现，分别在Arrays.sort()和Collections.sort()。
+ * 但是这两个类实现的方法不相同，Arrays用的是优化后的quicksort，而Collections使用的则是mergesort。
+ * **/
+
 public class Sort {
     private Boolean less(Comparable a, Comparable b){
         if(a.compareTo(b)<0) return true;
@@ -32,12 +37,16 @@ public class Sort {
      * **/
     public void bubbleSort(Comparable[] list){
         int len = list.length;
-        for(int i=0;i<len;i++){
-            for(int j=i+1;j<len;j++){
-                if(less(list[j],list[i])){
-                    swap(list,i,j);
+        boolean flag = true;
+        for(int i=1;i<len;i++){
+            flag = true;
+            for(int j=0;j<len-1;j++){
+                if(less(list[j+1],list[j])){
+                    swap(list,j+1,j);
+                    flag=false;
                 }
             }
+            if(flag) break;
         }
     }
 
@@ -179,7 +188,7 @@ public class Sort {
             merge(list,l,mid,mid,r);
         }
     }
-//    这里是非递归写法的mergeSort
+//    这里是非递归写法的mergeSort，第一层是间隔的大小，第二层是遍历。
     public void mergeSort(Comparable[] list){
         int len = list.length;
         for(int i=1;i<len;i*=2){
@@ -192,7 +201,7 @@ public class Sort {
 
     /***
      * Sort6: quickSort
-     * Runtime Complexity: O(nlogn)
+     * Runtime Complexity: O(nlogn)平均情况，最差的情况：O(n^2)
      * Space Complexity: O(1)
      * 排序方式：inplace
      * 稳定性：不稳定unstable
@@ -259,7 +268,7 @@ public class Sort {
 
     /***
      * Sort8: countingSort/keyIndexSorting
-     * RuntimeComplexity: O(n+k)
+     * RuntimeComplexity: O(n+k)，k=max-min,这是一个假polinomial算法。
      * SpaceComplexity:O(exponential)
      * 排序的方式：outplace
      * 稳定性：stable（但是我这个版本是不稳定的，因为是倒着来的）
@@ -302,8 +311,8 @@ public class Sort {
      * 稳定性：稳定stable
      * 算法:
      * （桶可以使用链表实现，为了实现一次可以创建多个链表，我们可以创建包含该链表的链表或者数组；该数组中的元素必须是可以进行加减运算，否则这个算法无法算出其中的范围）
-     * 1、然找出数组中最大的和最小的值然后算出范围,根据想要的桶的数量k计算每个桶的范围：range = (max-min+1)
-     * vol = range/k;
+     * 1、,根据想要的桶的数量k计算每个桶的范围：range = (max-min+1)
+     * vol = range/k;然找出数组中最大的和最小的值然后算出范围
      * 2、遍历数组，将对应范围的数放入相应的桶中：
      *  ——桶内需要按顺序排列
      * 3、把桶按顺序连接起来就可以得到有序数组。
@@ -381,10 +390,10 @@ public class Sort {
 
     public static void main(String[] args) {
         Sort test = new Sort();
-//        Integer[] list = {4,3,7,1,33,23};
-        int[] list = {4,3,7,1,33,23};
+        Integer[] list = {330,3,7,12,33,23};
+//        int[] list = {4,3,7,1,33,23};
 //        test.mergeSort(list,0,list.length);
-        test.radixSort(list);
+        test.heapSort(list);
         for(int i :list){
             System.out.println(i);
         }

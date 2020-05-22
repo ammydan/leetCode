@@ -24,13 +24,13 @@ public class MinHeap<Key extends Comparable<Key>> {
     }
     private void sink(int index){
         if(index*2>this.n) return;
-        for(int i = index;i*2<=this.n;i*=2){
-            int small =0;
-            if(i*2+1<=this.n) small = this.heap[i*2].compareTo(this.heap[i*2+1])==-1 ? i*2:i*2+1;
-            else
-                small = i*2;
-            if(this.heap[i].compareTo(this.heap[small])==-1)break;
-            swap(i,small);
+        int i = index;
+        while(i*2<=this.n){
+            i = i*2;
+            if(i+1<=this.n&&this.heap[i].compareTo(this.heap[i+1])==1)i = i+1;
+            if(this.heap[i/2].compareTo(this.heap[i])==-1)break;
+            swap(i,i/2);
+
         }
     }
 

@@ -30,7 +30,6 @@ public class MinHeap<Key extends Comparable<Key>> {
             if(i+1<=this.n&&this.heap[i].compareTo(this.heap[i+1])==1)i = i+1;
             if(this.heap[i/2].compareTo(this.heap[i])==-1)break;
             swap(i,i/2);
-
         }
     }
 

@@ -2,10 +2,7 @@ package dataStructure;
 
 import sun.awt.image.ImageWatched;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 
 /***
@@ -293,5 +290,48 @@ public class BinaryTree <T>{
         current.left = buildTreePP(preL+1,preL+index-postL,postL,index-1,preOrder,map);
         current.right = buildTreePP(preL+1+index-postL,preR,index+1,postR,preOrder,map);
         return current;
+    }
+    /**
+     * 序列化和反序列化
+     * */
+    public String serialize(){
+        if(root==null)return null;
+        LinkedList <T> serial = new LinkedList<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            Node tmp = queue.poll();
+            if(tmp==null){
+                serial.add(null);
+                continue;
+            }
+            serial.add(tmp.data);
+            queue.offer(tmp.left);
+            queue.offer(tmp.right);
+        }
+        return serial.toString();
+    }
+//    public boolean deserialize(String str){
+//        str = str.substring(1,str.length()-1);
+//        String[] list = str.split(",");
+//        String tmp = list[0];
+//        if(tmp.equals("null")){
+//            root =null;
+//            return true;
+//        }
+//        else{
+//            Integer.parseInt(tmp);
+//        }
+//    }
+    public static void main(String[] args) {
+//       LinkedList <Integer> array = new LinkedList<>();
+//       array.add(-1);
+//       array.add(null);
+//       array.add(2);
+//       String str = array.toString();
+//       System.out.println(str);
+        Object[] objects = new Object[2];
+        String str = "nhios";
+        System.out.println(objects[0]);
     }
 }

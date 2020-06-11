@@ -1,6 +1,7 @@
 package algorithm.recursive;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PascalTriangle2 {
@@ -9,6 +10,8 @@ public class PascalTriangle2 {
         for(int j=0;j<rowIndex;j++){
             list.add(helper(rowIndex,j));
         }
+        int[] hello = new int[4];
+        Arrays.asList(hello);
         return list;
     }
     private int helper(int row, int col){

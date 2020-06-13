@@ -38,8 +38,10 @@ public class Sort {
     public void bubbleSort(Comparable[] list){
         int len = list.length;
         boolean flag = true;
+        //外层控制遍历的次数
         for(int i=1;i<len;i++){
             flag = true;
+//            内层进行排序交换。
             for(int j=0;j<len-1;j++){
                 if(less(list[j+1],list[j])){
                     swap(list,j+1,j);

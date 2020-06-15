@@ -1,5 +1,51 @@
-递归的核心就是在递归的过程中将原来的问题拆解成更小的问题。
+1、递归的核心就是在递归的过程中将原来的问题拆解成更小的问题。
 
-在递归的过程中，我们需要注意以下两点：
+2、在递归的过程中，我们需要注意以下两点：
 ①一个简单的基本案例(basic case)或者一些(至少要有一个),能过不使用递归来产生答案的终止方法。
 ②一组规则(递推关系),可将所有情况拆分到基本案例。
+
+3、尾递归：
+public class Main {
+
+  private static int helper_non_tail_recursion(int start, int [] ls) {
+    if (start >= ls.length) {
+      return 0;
+    }
+    // not a tail recursion because it does some computation after the recursive call returned.
+    return ls[start] + helper_non_tail_recursion(start+1, ls);
+  }
+
+  public static int sum_non_tail_recursion(int [] ls) {
+    if (ls == null || ls.length == 0) {
+      return 0;
+    }
+    return helper_non_tail_recursion(0, ls);
+  }
+
+  //---------------------------------------------
+
+  private static int helper_tail_recursion(int start, int [] ls, int acc) {
+    if (start >= ls.length) {
+      return acc;
+    }
+    // this is a tail recursion because the final instruction is the recursive call.
+    return helper_tail_recursion(start+1, ls, acc+ls[start]);
+  }
+
+  public static int sum_tail_recursion(int [] ls) {
+    if (ls == null || ls.length == 0) {
+      return 0;
+    }
+    return helper_tail_recursion(0, ls, 0);
+  }
+}
+
+注意：并不是所有的语言都支持尾递归的优化，只有C/C++支持，而java和python都不支持尾递归优化。
+
+4、自顶而下和自底而上的解决方案（针对树）
+①自顶而下（类似尾递归）
+是先在该节点进行一些操作，然后再往下进行进一步的计算。
+
+②自底而上
+是先要调用子节点，然后根据子节点的返回值进行计算然后再返回。
+

@@ -1,0 +1,13 @@
+1、Algorithm:
+A problem by
+①dividing it into smaller subproblems of the same type;
+②solving(recursively or iteratively) each subproblem; and
+③combining solutions to subproblems to get solutions to the original problem.
+
+2、The Master Theorem
+T(n) = aT(n/b)+f(n)
+c = log_b a;
+a>=1, b>0, f(n)>0.
+①if  f(n) == O(n^(c-Ω), then T(n)=θ(n^c) for some Ω.
+②if f(n) == θ(n^c(logn)^k), k>=0, then T(n)=θ(n^c(logn)^k)
+

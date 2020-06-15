@@ -104,7 +104,7 @@ public class BinaryTree <T>{
     }
     /****
      * 遍历顺序：
-     * 3、中序遍历
+     * 3、后序遍历
      * *****/
     public List<T> postorderTraversal(){
         LinkedList<Node> stack = new LinkedList<>();

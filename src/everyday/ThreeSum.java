@@ -88,6 +88,7 @@ public class ThreeSum {
                     temp.add(nums[left]);
                     temp.add(nums[right]);
                     ans.add(temp);
+//                    这里很关键，可以帮助减去重复的可能。
                     while(left<right&&nums[left]==nums[++left]);
                     while(left<right&&nums[right]==nums[--right]);
                 }

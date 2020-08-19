@@ -1,6 +1,8 @@
 package middle;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Objects;
 
 /***
  * 300. Longest Increasing Subsequence
@@ -25,7 +27,65 @@ import java.util.Arrays;
  * 时间复杂度：O(nlogn)
  * ***/
 public class LongestIncreasingSubsequence {
+//    private class Pair {
+//        int x ;
+//        int y;
+//        Pair(int x,int y){
+//            this.x = x;
+//            this.y = y;
+//        }
+//
+//        @Override
+//        public int hashCode() {
+//            System.out.println(Objects.hash(x,y));
+//            return Objects.hash(x,y);
+//        }
+//
+//        @Override
+//        public boolean equals(Object obj) {
+//            Pair o = (Pair) obj;
+//            if(this.x==o.x&&this.y==o.y)return true;
+//            return false;
+//        }
+//    }
     public int lengthOfLIS(int[] nums) {
+//        int len = nums.length;
+//        if(len==0)return 0;
+//        int max = 0;
+//        for(int i=0;i<len;i++){
+//            max =  nums[i]>max?nums[i]:max;
+//        }
+//        HashMap<Pair,Integer> opt = new HashMap<>();
+//        for(int i=1;i<=len;i++){
+//            opt.put(new Pair(i,nums[i-1]),1);
+//            for(int j=0;j<i;j++){
+//                if(j==0)continue;
+//                 if(nums[j-1]<nums[i-1]){
+//                    int value = Math.max(opt.get(new Pair(i-1,nums[j-1]))+1,opt.get(new Pair(i,nums[i-1])));
+//                    opt.put(new Pair(i,nums[i-1]),value);
+//                }
+//                 opt.put(new Pair(i,nums[j-1]),opt.get(new Pair(i-1,nums[j-1])));
+//            }
+//        }
+//        int ans = 0;
+//        for(int i: opt.values()){
+//            ans = ans>i?ans:i;
+//        }
+//        return ans;
+//        int[][] opt = new int[len+1][max+1];
+//        for(int i=1;i<=len;i++){
+//            opt[i][nums[i-1]] = 1;
+//            for(int j=0;j<i;j++){
+//                if(j==0)continue;
+//                else if(nums[j-1]<nums[i-1])opt[i][nums[i-1]] = Math.max(opt[i-1][nums[j-1]]+1,opt[i][nums[i-1]]);
+//                else opt[i][nums[j-1]] = opt[i-1][nums[j-1]];
+//            }
+//        }
+//        int ans = 1;
+//        for(int i=0;i<=max;i++){
+//            ans = ans>opt[len][i]?ans:opt[len][i];
+//        }
+//        return ans;
         if(nums.length<1)return 0;
         if(nums.length<2) return 1;
 //        int[] opt = new int[nums.length];
@@ -87,7 +147,9 @@ public class LongestIncreasingSubsequence {
 //        int[] nums={1,3,6,7,9,4,10,5,6};
 //        int[] nums={10,9,2,5,3,7,101,18};
 //        int[] nums={4,10,4,3,8,9};
-        int[] nums={2,2};
+//        int[] nums={2,2};
+//        int[] nums={-2,-1};
+        int[] nums = {10,9,2,5,3,4};
         int ans = test.lengthOfLIS(nums);
         System.out.println(ans);
 

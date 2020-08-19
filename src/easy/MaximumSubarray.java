@@ -14,6 +14,18 @@ public class MaximumSubarray {
             maxValue = maxValue>current?maxValue:current;
         }
         return maxValue;
+//        下面这个动态规划无法满足至少取一个子数组的要求。
+//        int len = nums.length;
+//        if(len==0)return 0;
+//        if(len==1)return nums[0];
+//        int [][] opt = new int[len][2];
+//        opt[0][0] = 0;
+//        opt[0][1] = nums[0];
+//        for(int i=0;i<len;i++){
+//            opt[i][0] = Math.max(opt[i-1][0],opt[i-1][1]);
+//            opt[i][1] = Math.max(opt[i-1][1]+nums[i],nums[i]);
+//        }
+//        return opt[len][0]>opt[len][1]?opt[len][0]:opt[len][1];
 
     }
 

@@ -94,6 +94,8 @@ public class TrappingRainWater {
             }
         }
         return area;
+//        4、单调栈
+
 
     }
 

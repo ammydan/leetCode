@@ -7,7 +7,8 @@ import java.util.HashMap;
  * 限制：你必须将你的元素转换为int，我有一个想法是不如直接将array直接转换为hashmap，
  * 因为创建的类都会考虑实现hashcode,另外延展为comparable也是同理。
  *
- * 这个数据结构有一个巨大的缺陷，就是必须提前知道有多少个元素，元素是什么，否则无法进行下去。
+ * 如果用最简单的数组来实现，这个数据结构有一个巨大的缺陷，就是必须提前知道有多少个元素，元素是什么，否则无法进行下去。
+ * 这里可以使用hashmap来完成底层的实现。
  * **/
 public class UnionFind <T extends Comparable>{
     /**
@@ -117,7 +118,7 @@ public class UnionFind <T extends Comparable>{
         T valA = root20(a);
         T valB = root20(b);
         if(valA.equals(valB))return;
-        if(valA.compareTo(valB)>0){
+        if(num.get(valA)>num.get(valB)){
             parent.put(valB,valA);
             num.put(valA,num.get(valB)+num.get(valA));
         }else{

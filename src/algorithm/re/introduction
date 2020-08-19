@@ -1,0 +1,20 @@
+Pattern matching: Find one of a specified set of strings in text.
+
+1. Duality between REs and DFAs
+① Definition
+1) RE: Concise way to describe a set of strings
+2) DFA: Machine to recognize whether a given string is in a given set.
+②Kleene's theorem
+1) For any DFA, there exists a RE that describe the same set of stirngs.
+2) For any RE, there exists a DFA that recognizeds the same set of strings.
+
+2. Pattern Matching Implementation
+①DirectedDFS
+Use DirectedGraph to find all vertices reachable from a given source or set of vertices.
+②Build an NFA corresponding to an RE
+1) Add match-transition edge from state corresponding to characters int eh alphabet to next state.
+2) Add σ-transition edge from parentheses to next state.
+3) Add three σ-transition edges for each * operator.
+4) Add two σ-transition edges for each | operator.
+
+

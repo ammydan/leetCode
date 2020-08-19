@@ -118,7 +118,6 @@ public class BinaryTree <T>{
                 current = current.left;
             }
             while(!stack.isEmpty()&&flag.peek()){
-                current = stack.pop();
                 ans.add(current.data);
                 flag.pop();
             }
@@ -224,6 +223,7 @@ public class BinaryTree <T>{
 
     /***
      *路径总和，因为我这里是泛型，所以这里会报错
+     * 这里一定要注意但凡有了一个子节点，那么该节点就不能被称为叶子节点，就少了一个选择。
      * ****/
 //    public boolean hasPathSum(int sum){
 //        if(root==null)return false;
@@ -290,6 +290,20 @@ public class BinaryTree <T>{
         current.left = buildTreePP(preL+1,preL+index-postL,postL,index-1,preOrder,map);
         current.right = buildTreePP(preL+1+index-postL,preR,index+1,postR,preOrder,map);
         return current;
+    }
+
+    /**
+     * 找到最近公共节点，一个思路就是如果一个节点，左右各有p,q无论顺序，那么这是一个最近公共节点。
+     * */
+    public Node lowestCommonAncestor(Node root, Node p, Node q){
+        if(root==null)return root;
+        if(root.data==p.data||root.data==q.data)return root;
+        Node left = lowestCommonAncestor(root.left,p,q);
+        Node right = lowestCommonAncestor(root.right,p,q);
+        if(left!=null&&right!=null)return root;
+        if(left!=null)return left;
+        if(right!=null)return right;
+        return null;
     }
     /**
      * 序列化和反序列化
